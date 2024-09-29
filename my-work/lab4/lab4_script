@@ -1,0 +1,14 @@
+#!/bin/bash
+
+BUCKET_NAME="ds2022-huk5pd"
+FILE_PATH="path/to/your/file.extension" # Replace with the path to your file
+S3_PATH="s3://${BUCKET_NAME}/$(basename ${FILE_PATH})"
+
+# Step 1: Upload a file to the S3 bucket
+aws s3 cp ${FILE_PATH} ${S3_PATH}
+echo "File uploaded to S3: ${S3_PATH}"
+
+# Step 2: Generate a presigned URL with a 7-day expiration
+EXPIRATION_TIME=604800 # 7 days in seconds
+PRESIGNED_URL=$(aws s3 presign --expires-in ${EXPIRATION_TIME} ${S3_PATH})
+echo "Presigned URL (valid for 7 days): ${PRESIGNED_URL}
